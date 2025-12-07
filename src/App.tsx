@@ -3,6 +3,9 @@ import { ShortcutChecklist } from './components/ShortcutChecklist';
 import { Progress } from './components/ui/progress';
 import { Button } from './components/ui/button';
 import { RotateCcw, Keyboard } from 'lucide-react';
+import ResetContainer from './imports/ResetContainer';
+import { ImageWithFallback } from './components/figma/ImageWithFallback';
+import logoImage from 'figma:asset/6efaeea9ee828b976ecf8c218ae2034f48593b27.png';
 
 export default function App() {
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
@@ -40,41 +43,29 @@ export default function App() {
   const progress = totalItems > 0 ? (checkedItems.size / totalItems) * 100 : 0;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#000' }}>
+    <div className="min-h-screen bg-black text-white">
       <div className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Keyboard className="w-10 h-10 text-purple-600" />
-            <h1 className="text-purple-900">Figmakey</h1>
-          </div>
-        </div>
-
-        {/* Progress Section */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-purple-100">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <div>
-                <p className="text-gray-600 mb-1">学習進捗</p>
-                <p className="text-purple-900">
-                  {checkedItems.size} / {totalItems} 
-                  <span className="text-gray-500 ml-2">
-                    ({totalItems > 0 ? Math.round(progress) : 0}%)
-                  </span>
-                </p>
-              </div>
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <ImageWithFallback src={logoImage} alt="Figmakey Logo" className="h-[28px] w-auto" />
+              <h1 className="text-4xl font-bold text-white tracking-[0.02em] font-[Product_Sans] text-[22px]">Figmakey</h1>
             </div>
-            <Button
-              onClick={handleReset}
-              variant="outline"
-              size="sm"
-              className="gap-2"
-            >
-              <RotateCcw className="w-4 h-4" />
-              リセット
-            </Button>
+            <button onClick={handleReset} type="button" className="hover:opacity-80 transition-opacity">
+              <ResetContainer />
+            </button>
           </div>
-          <Progress value={progress} className="h-3" />
+
+          <div className="mb-2">
+            <p className="text-[#B897FF] font-[Product_Sans] font-bold">
+              {checkedItems.size} / {totalItems} 
+              <span className="text-[rgb(255,255,255)] ml-[8px] font-[Product_Sans] font-bold text-[32px] mt-[0px] mr-[0px] mb-[0px]">
+                {totalItems > 0 ? Math.round(progress) : 0}<span className="text-[14px] mt-[0px] mr-[0px] mb-[0px] ml-[1px]">%</span>
+              </span>
+            </p>
+          </div>
+          <Progress value={progress} className="h-[8px] bg-white/10 [&>[data-slot=progress-indicator]]:bg-[#874FFF]" />
         </div>
 
         {/* Checklist */}
@@ -85,8 +76,9 @@ export default function App() {
         />
 
         {/* Footer */}
-        <div className="text-center mt-8 text-gray-500">
-          <p>チェック状態は自動的にブラウザに保存されます</p>
+        <div className="text-center mt-8 text-gray-400">
+          <p className="text-[14px]">チェック状態は、自動的にブラウザに保存。</p>
+          <p className="text-xs mt-2">©︎ StartWith Inc.</p>
         </div>
       </div>
     </div>
